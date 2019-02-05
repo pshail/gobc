@@ -1,10 +1,16 @@
 package main
 
 import (
-	"github.com/davecgh/go-spew/spew"
+	"log"
+
 	"github.com/heckdevice/gobc/core"
 )
 
 func main() {
-	spew.Dump(core.Blockchain)
+	for i := 0; i < 100; i++ {
+		_, err := core.Add(map[string]interface{}{"DataPoint": i})
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
 }

@@ -4,6 +4,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"errors"
+	"fmt"
 	"log"
 	"strconv"
 
@@ -39,4 +40,26 @@ func (b *Block) GetHash() (*string, error) {
 	hashed := hash.Sum(nil)
 	strHash := hex.EncodeToString(hashed)
 	return &strHash, nil
+}
+
+// IsValid - Checks if the block is valid for the chain
+// return error if invalid
+func (b *Block) IsValid(previousBlock Block) error {
+	//new block should just be next to the previous block
+	if previousBlock.Index+1 != b.Index {
+		return fmt.Errorf("Index %d invalid per the previous block index of %d", b.Index, previousBlock.Index)
+	}
+	//new block hash PreviousBlockHash should be same as previousBlock Hash
+	if *previousBlock.Hash != *b.PreviousBlockHash {
+		return fmt.Errorf("PreviousBlockHash of the new block is not equal to previous block Hash")
+	}
+	//recheck the hash of new block
+	currentBlockHash, err := b.GetHash()
+	if err != nil {
+		return err
+	}
+	if *currentBlockHash != *b.Hash {
+		return fmt.Errorf("new block hash is invalid or tempared with")
+	}
+	return nil
 }
