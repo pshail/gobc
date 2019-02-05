@@ -24,6 +24,9 @@ jobs:
     working_directory: /go/src/github.com/heckdevice/gobc
     steps:
       - checkout
+      - run: go get -u github.com/mitchellh/gox
+      - run: go get -u github.com/tcnksm/ghr
+      - run: go get -u github.com/stevenmatthewt/semantics
       - run:
           name: cross compile
           command: |
