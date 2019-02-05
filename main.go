@@ -12,7 +12,7 @@ func main() {
 }
 
 func testAdd() {
-	for i := 0; i < 2; i++ {
+	for i := 0; i < 10000; i++ {
 		_, err := core.Add(map[string]interface{}{"DataPoint": i})
 		if err != nil {
 			log.Fatal(err)
