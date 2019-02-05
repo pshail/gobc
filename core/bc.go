@@ -1,10 +1,9 @@
 package core
 
 import (
+	"encoding/json"
 	"sync"
 	"time"
-
-	"github.com/davecgh/go-spew/spew"
 )
 
 var (
@@ -54,8 +53,18 @@ func Add(data interface{}) (bool, error) {
 	mutex.Lock()
 	blockchain.Chain = append(blockchain.Chain, *newBlock)
 	mutex.Unlock()
-	spew.Dump(blockchain)
 	return true, nil
+}
+
+//GetChain - Returns the current chain as json in blockchain
+// TODO - this should return immutable objects
+func GetChain() (*string, error) {
+	chainBytes, err := json.Marshal(blockchain.Chain)
+	if err != nil {
+		return nil, err
+	}
+	chainJSON := string(chainBytes)
+	return &chainJSON, nil
 }
 
 /******* Core functions of the chain **********/
