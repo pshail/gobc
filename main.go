@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/davecgh/go-spew/spew"
@@ -23,6 +24,7 @@ func testAdd() {
 		log.Fatal(err)
 
 	} else {
-		spew.Dump(bcData)
+		spew.Dump(*bcData)
+		fmt.Println(*bcData)
 	}
 }
