@@ -1,6 +1,7 @@
 package core
 
 import (
+	"reflect"
 	"sync"
 	"time"
 
@@ -18,10 +19,10 @@ var (
 // BC a.k.a Blockchain, a simple chain of blocks
 type BC struct {
 	// Chain - Blocks in BC
-	Count        int     `json:"count"`
-	CurrentIndex int     `json:"current_index"`
-	CurrentHash  string  `json:"current_hash"`
-	Chain        []Block `json:"chain"`
+	Count       int     `json:"count"`
+	Size        uintptr `json:"size"`
+	CurrentHash string  `json:"current_hash"`
+	Chain       []Block `json:"chain"`
 }
 
 func getGenesisBlock() Block {
@@ -39,7 +40,7 @@ func Init() {
 		genBlock := getGenesisBlock()
 		blockchain.Chain[0] = genBlock
 		blockchain.Count = len(blockchain.Chain)
-		blockchain.CurrentIndex = genBlock.Index
+		blockchain.Size = uintptr(len(blockchain.Chain)) * reflect.TypeOf(blockchain.Chain).Elem().Size()
 		blockchain.CurrentHash = *genBlock.Hash
 	}
 	mutex.Unlock()
@@ -60,7 +61,7 @@ func Add(data interface{}) (bool, *Block, error) {
 	mutex.Lock()
 	blockchain.Chain = append(blockchain.Chain, *newBlock)
 	blockchain.Count = len(blockchain.Chain)
-	blockchain.CurrentIndex = newBlock.Index
+	blockchain.Size = uintptr(len(blockchain.Chain)) * reflect.TypeOf(blockchain.Chain).Elem().Size()
 	blockchain.CurrentHash = *newBlock.Hash
 	mutex.Unlock()
 	return true, newBlock, nil
