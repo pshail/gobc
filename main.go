@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/heckdevice/gobc/core"
 )
 
@@ -24,7 +23,6 @@ func testAdd() {
 		log.Fatal(err)
 
 	} else {
-		spew.Dump(*bcData)
 		fmt.Println(*bcData)
 	}
 }
