@@ -59,7 +59,7 @@ func Add(data interface{}) (bool, error) {
 //GetChain - Returns the current chain as json in blockchain
 // TODO - this should return immutable objects
 func GetChain() (*string, error) {
-	chainBytes, err := json.Marshal(blockchain)
+	chainBytes, err := json.MarshalIndent(blockchain, "", " ")
 	if err != nil {
 		return nil, err
 	}
